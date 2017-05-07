@@ -1,0 +1,12 @@
+LIBRARY "az.camera.CoreCyVideoSource.dll"
+EXPORTS 
+
+GetDeviceCount		@1
+GetDeviceDescrption	@2
+OpenDevice			@3
+CloseDevice			@4
+QuaryFrame			@5
+GetImg				@6
+GetImgWidth			@7
+GetImgHeight		@8
+RetriveFrame		@9
