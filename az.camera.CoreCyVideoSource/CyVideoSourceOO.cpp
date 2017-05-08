@@ -4,19 +4,15 @@
 CyVideoSourceOO::CyVideoSourceOO()
     : m_isRecvRun(false)
     , m_isCvtRun(false)
+    , m_fps(0)
+    , m_tmpClock(0)
 {
 }
 
 
 CyVideoSourceOO::~CyVideoSourceOO()
 {
-    m_isCvtRun = false;
-    if (m_cvtThd != nullptr)
-        m_cvtThd->join();
-    m_isRecvRun = false;
-    if (m_recvThd != nullptr)
-        m_recvThd->join();
-
+    Stop();
 }
 
 cv::Mat CyVideoSourceOO::GetFrame()
@@ -36,17 +32,65 @@ void CyVideoSourceOO::DeviceDescrption(const int & index, char* pDst, const size
     strcpy_s(pDst, dstLen, local.FriendlyName);
 }
 
+bool CyVideoSourceOO::SetParam(unsigned char * param, const size_t& paramLen)
+{
+    if (!m_USBDevice->IsOpen())
+        return false;
+    auto state = m_isRecvRun;
+    if (state == true)
+        Stop();
+    auto ept = m_USBDevice->ControlEndPt;
+    ept->Target = TGT_DEVICE;
+    ept->ReqType = REQ_VENDOR;
+    ept->Direction = DIR_TO_DEVICE;
+    ept->ReqCode = 0x05;
+    ept->Value = 1;
+    ept->Index = 0;
+    long len = paramLen;
+    auto r = ept->XferData(param, len);
+    if (state == true)
+        Start();
+    return r;
+}
+
+float CyVideoSourceOO::FPS() const
+{
+    return m_fps;
+}
+
 bool CyVideoSourceOO::Open(int index)
 {
     m_USBDevice = std::make_shared<CCyUSBDevice>();
     m_USBDevice->Open(index);
-    m_isCvtRun = m_isRecvRun = m_USBDevice->IsOpen();
-    if (m_isRecvRun)
+    return m_USBDevice->IsOpen();
+}
+
+bool CyVideoSourceOO::Start()
+{
+    if (m_USBDevice->IsOpen())
     {
+        m_isCvtRun = m_isRecvRun = true;
         m_recvThd = std::make_shared<std::thread>(std::bind(&CyVideoSourceOO::CoreRecv, this));
         m_cvtThd = std::make_shared<std::thread>(std::bind(&CyVideoSourceOO::CoreCVT, this));
     }
-    return m_isRecvRun;
+    return m_USBDevice->IsOpen();
+}
+
+void CyVideoSourceOO::Stop()
+{
+    m_isCvtRun = false;
+    if (m_cvtThd != nullptr)
+    {
+        m_cvtThd->join();
+        m_cvtThd.reset();
+    }
+    m_isRecvRun = false;
+    if (m_recvThd != nullptr)
+    {
+        m_recvThd->join();
+        m_recvThd.reset();
+    }
+    
 }
 
 void CyVideoSourceOO::CoreRecv()
@@ -64,6 +108,9 @@ void CyVideoSourceOO::CoreRecv()
         sumRecv += recv;
         if (recv % 512 != 0)
         {
+            auto clk = clock();
+            m_fps = 1000.0f / (clk - m_tmpClock);
+            m_tmpClock = clk;
             FrameDesc frameDesc{ pframe, sumRecv };
             m_rawFrames.push(frameDesc);
             pframe = new unsigned char[frameLen * 3];
@@ -86,8 +133,11 @@ void CyVideoSourceOO::CoreCVT()
         cv::Mat i(pheader->height, pheader->width, CV_8UC1, pframe);
         cv::Mat o(pheader->height, pheader->width, CV_8UC3);
         cv::cvtColor(i, o, CV_BayerRG2RGB);
+
+        /// gay mode
+        //cv::Mat o(pheader->height, pheader->width, CV_8UC1);
+        //cv::cvtColor(i, o, CV_BayerBG2GRAY);
         m_rgbFrames.push(o);
         delete[] pframe;
     }
-
 }

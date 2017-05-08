@@ -22,6 +22,7 @@ namespace az
             if (m_queue.empty())
             {
                 m_queue.push(obj);
+                //printf("buffer count = %d", m_queue.size());
                 condition.notify_one();
             }
         }

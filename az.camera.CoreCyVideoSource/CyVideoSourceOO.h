@@ -30,8 +30,12 @@ public:
     ~CyVideoSourceOO();
     cv::Mat GetFrame();
     bool Open(int index);
+    bool Start();
+    void Stop();
     static int DeviceCount();
     static void DeviceDescrption(const int & index, char *pDst, const size_t & dstLen);
+    bool SetParam(unsigned char * param, const size_t & paramLen);
+    float FPS() const;
 private:
     void CoreRecv();
     void CoreCVT();
@@ -42,4 +46,7 @@ private:
     std::shared_ptr<std::thread> m_cvtThd;
     bool m_isRecvRun;
     bool m_isCvtRun;
+    float m_fps;
+    clock_t m_tmpClock;
+
 };

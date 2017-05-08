@@ -10,3 +10,6 @@ GetImg				@6
 GetImgWidth			@7
 GetImgHeight		@8
 RetriveFrame		@9
+VideoStart			@10
+VideoStop  			@11
+GetFPS  			@12

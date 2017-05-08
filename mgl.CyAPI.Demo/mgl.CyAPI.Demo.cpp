@@ -24,6 +24,7 @@ int main()
 
     
     auto pDev = OpenDevice(0);// 打开第一个设备
+    VideoStart(pDev);
     // 循环获取50帧数据
     constexpr auto frames = 50;
     for(int i = 0; i < frames; i++)
@@ -32,16 +33,17 @@ int main()
         auto width = GetImgWidth(frame);
         auto height = GetImgHeight(frame);
         auto img = GetImg(frame); // 从图像数据帧中获取RGB数据
-
+        auto fps = GetFPS(pDev);
         // 显示图像数据
         cv::Mat m(height, width, CV_8UC3, img);
         cv::imshow("mgl", m);
         cv::waitKey(1);
-        printf("\b\r %3d: image got, width=%d, height=%d", i + 1, width, height);
+        printf("\b\r %3d: image got, width=%d, height=%d, FPS=%f", i + 1, width, height, fps);
 
         //还回用完的图像数据，避免内存泄露
         RetriveFrame(frame);
     }
+    VideoStop(pDev);
     CloseDevice(pDev);    //关闭设备 
     printf("\n press any key to quit...\n");
     getchar();

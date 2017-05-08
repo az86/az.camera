@@ -59,3 +59,27 @@ void CloseDevice(PDevice pDev)
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
     delete lpDev;
 }
+
+bool VideoStart(PDevice pDev)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    return lpDev->Start();
+}
+
+void VideoStop(PDevice pDev)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    lpDev->Stop();
+}
+
+float GetFPS(PDevice pDev)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    return lpDev->FPS();
+}
+
+bool SetParameter(PDevice pDev, unsigned char * param, const size_t paramLen)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    return lpDev->SetParam(param, paramLen);
+}
