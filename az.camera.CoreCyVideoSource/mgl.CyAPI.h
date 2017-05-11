@@ -112,3 +112,29 @@ extern float GetFPS(PDevice pDev);
 /// <Return>NA<Return/>
 ////////////////////////////////////////////////////////////////
 extern bool SetParameter(PDevice pDev, unsigned char * param, const size_t paramLen);
+
+////////////////////////////////////////////////////////////////
+/// <Function> SetLED <Function/>
+/// <Description> 控制LED<Description/>
+/// <pDev> 设备对象 <pDev/>
+/// <value> LED控制，低9位有效，值为1的位相应的LED亮<value/>
+/// <Return>成功 true，否则false<Return/>
+////////////////////////////////////////////////////////////////
+extern bool SetLED(PDevice pDev, unsigned short value);
+
+////////////////////////////////////////////////////////////////
+/// <Function> SetSensorGain <Function/>
+/// <Description> 控制相机增益值<Description/>
+/// <pDev> 设备对象 <pDev/>
+/// <value> 增益值，默认值为0x0008，最大0x0063<value/>
+/// <Return>成功 true，否则false<Return/>
+////////////////////////////////////////////////////////////////
+extern bool SetSensorGain(PDevice pDev, unsigned short value);
+
+////////////////////////////////////////////////////////////////
+/// <Function> InitSersor <Function/>
+/// <Description> 初始化相机<Description/>
+/// <pDev> 设备对象 <pDev/>
+/// <Return>成功 true，否则false<Return/>
+////////////////////////////////////////////////////////////////
+extern bool InitSersor(PDevice pDev);

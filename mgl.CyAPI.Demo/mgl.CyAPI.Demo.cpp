@@ -26,7 +26,7 @@ int main()
     auto pDev = OpenDevice(0);// 打开第一个设备
     VideoStart(pDev);
     // 循环获取50帧数据
-    constexpr auto frames = 50;
+    constexpr auto frames = 500;
     for(int i = 0; i < frames; i++)
     {
         auto frame = QuaryFrame(pDev);

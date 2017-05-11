@@ -81,5 +81,35 @@ float GetFPS(PDevice pDev)
 bool SetParameter(PDevice pDev, unsigned char * param, const size_t paramLen)
 {
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
-    return lpDev->SetParam(param, paramLen);
+    return lpDev->SetParam(0x05, 1, 0, param, paramLen);
+}
+
+bool SetLED(PDevice pDev, unsigned short value)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    value &= 0x1FF;
+    return lpDev->SetParam(0xB5, 0x009A, value, nullptr, 0);
+}
+
+bool SetSensorGain(PDevice pDev,unsigned short value)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    if (value > 0x63)
+        return false;
+    return lpDev->SetParam(0xB4, 0x0035, value, nullptr, 0);
+}
+
+bool InitSersor(PDevice pDev)
+{
+        auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+
+        auto rval0 = lpDev->SetParam(0xB4, 0x0008, 0x0000, nullptr, 0);
+        auto rval1 = lpDev->SetParam(0xB4, 0x0009, 0x00E6, nullptr, 0);
+        auto rval2 = lpDev->SetParam(0xB4, 0x000C, 0x0613, nullptr, 0);
+        auto rval3 = lpDev->SetParam(0xB4, 0x002B, 0x0008, nullptr, 0);
+        auto rval4 = lpDev->SetParam(0xB4, 0x002C, 0x0012, nullptr, 0);
+        auto rval5 = lpDev->SetParam(0xB4, 0x002D, 0x000A, nullptr, 0);
+        auto rval6 = lpDev->SetParam(0xB4, 0x002E, 0x0008, nullptr, 0);
+
+        return rval0&& rval1&& rval2&&rval3&&rval4&&rval5&&rval6;
 }

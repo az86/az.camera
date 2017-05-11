@@ -32,7 +32,7 @@ void CyVideoSourceOO::DeviceDescrption(const int & index, char* pDst, const size
     strcpy_s(pDst, dstLen, local.FriendlyName);
 }
 
-bool CyVideoSourceOO::SetParam(unsigned char * param, const size_t& paramLen)
+bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsigned short index, unsigned char * param, const size_t& paramLen)
 {
     if (!m_USBDevice->IsOpen())
         return false;
@@ -43,9 +43,9 @@ bool CyVideoSourceOO::SetParam(unsigned char * param, const size_t& paramLen)
     ept->Target = TGT_DEVICE;
     ept->ReqType = REQ_VENDOR;
     ept->Direction = DIR_TO_DEVICE;
-    ept->ReqCode = 0x05;
-    ept->Value = 1;
-    ept->Index = 0;
+    ept->ReqCode = reqCode;// 0x05;
+    ept->Value = value;// 1;
+    ept->Index = index;// 0;
     long len = paramLen;
     auto r = ept->XferData(param, len);
     if (state == true)
@@ -96,7 +96,7 @@ void CyVideoSourceOO::Stop()
 void CyVideoSourceOO::CoreRecv()
 {
     constexpr int frameLen = 2592 * 1944 + 256 + 80;
-    auto pframe = new unsigned char[frameLen];
+    auto pframe = new unsigned char[frameLen*3];
     constexpr auto bufLen = 1024 * 1024;
     // std::thread([&isRun]() {getchar(); isRun = false; });
     long sumRecv = 0;
@@ -112,8 +112,17 @@ void CyVideoSourceOO::CoreRecv()
             m_fps = 1000.0f / (clk - m_tmpClock);
             m_tmpClock = clk;
             FrameDesc frameDesc{ pframe, sumRecv };
-            m_rawFrames.push(frameDesc);
-            pframe = new unsigned char[frameLen * 3];
+            printf("/n%d, %d\n", sumRecv, frameLen);
+            if (sumRecv == frameLen)
+            {
+                m_rawFrames.push(frameDesc);
+                pframe = new unsigned char[frameLen * 3];
+            }
+            else
+            {
+                memset(pframe, 0, frameLen*3);
+            }
+            
             sumRecv = 0;
         }
     }
