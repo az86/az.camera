@@ -13,3 +13,7 @@ RetriveFrame		@9
 VideoStart			@10
 VideoStop  			@11
 GetFPS  			@12
+SetParameter		@13
+SetLED				@14
+SetSensorGain		@15
+InitSersor			@16

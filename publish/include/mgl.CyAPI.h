@@ -10,131 +10,131 @@
 typedef void * PDevice;
 
 ////////////////////////////////////////////////////////////////
-/// <Function> GetDeviceCount <Function/>
-/// <Description> 获取连接的设备数量<Description/>
-/// <Return>连接的设备数量<Return/>
+/// <Function> GetDeviceCount </Function>
+/// <Description> 获取连接的设备数量</Description>
+/// <Return>连接的设备数量</Return>
 ////////////////////////////////////////////////////////////////
 extern int GetDeviceCount();
 
 ////////////////////////////////////////////////////////////////
-/// <Function> GetDeviceDescrption <Function/>
-/// <Description> 获取设备描述<Description/>
-/// <index> 设备的索引 <index/>
-/// <pDst> 存放描述的数组 <pDst/>
+/// <Function> GetDeviceDescrption </Function>
+/// <Description> 获取设备描述</Description>
+/// <index> 设备的索引 </index>
+/// <pDst> 存放描述的数组 </pDst>
 /// <dstLen> 存放描述的数组长度 <dstLen/>
-/// <Return>NA<Return/>
+/// <Return>NA</Return>
 ////////////////////////////////////////////////////////////////
 extern void GetDeviceDescrption(const int index, char* pDst, const size_t dstLen);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> OpenDevice <Function/>
-/// <Description> 打开设备<Description/>
-/// <index> 设备的索引 <index/>
-/// <Return>打开的设备对象, 如果失败返回nullptr<Return/>
+/// <Function> OpenDevice </Function>
+/// <Description> 打开设备</Description>
+/// <index> 设备的索引 </index>
+/// <Return>打开的设备对象, 如果失败返回nullptr</Return>
 ////////////////////////////////////////////////////////////////
 extern PDevice OpenDevice(const int deviceIndex);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> QuaryFrame <Function/>
-/// <Description> 获取一帧图像数据包，使用完毕后需要调用RetriveFrame销毁图像内存，避免内存泄露<Description/>
-/// <pDev> 设备对象 <pDev.>
-/// <Return>图像数据包<Return/>
+/// <Function> QuaryFrame </Function>
+/// <Description> 获取一帧图像数据包，使用完毕后需要调用RetriveFrame销毁图像内存，避免内存泄露</Description>
+/// <pDev> 设备对象 </pDev>
+/// <Return>图像数据包</Return>
 ////////////////////////////////////////////////////////////////
 extern unsigned char * QuaryFrame(PDevice pDev);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> GetImgWidth <Function/>
-/// <Description> 从一帧图像数据包中获取图像的宽度<Description/>
-/// <Return>图像的宽度<Return/>
+/// <Function> GetImgWidth </Function>
+/// <Description> 从一帧图像数据包中获取图像的宽度</Description>
+/// <Return>图像的宽度</Return>
 ////////////////////////////////////////////////////////////////
 extern int GetImgWidth(unsigned char * pframe);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> GetImgHeight <Function/>
-/// <Description> 从一帧图像数据包中获取图像的高度<Description/>
-/// <Return>图像的高度<Return/>
+/// <Function> GetImgHeight </Function>
+/// <Description> 从一帧图像数据包中获取图像的高度</Description>
+/// <Return>图像的高度</Return>
 ////////////////////////////////////////////////////////////////
 extern int GetImgHeight(unsigned char * pframe);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> GetImg <Function/>
-/// <Description> 从一帧图像数据包中获取图像数据<Description/>
-/// <Return>图像数据<Return/>
+/// <Function> GetImg </Function>
+/// <Description> 从一帧图像数据包中获取图像数据</Description>
+/// <Return>图像数据</Return>
 ////////////////////////////////////////////////////////////////
 extern unsigned char * GetImg(unsigned char * pframe);
 
 
 ////////////////////////////////////////////////////////////////
-/// <Function> RetriveFrame <Function/>
-/// <Description> 把图像内存还给图像获取服务，避免内存泄露<Description/>
-/// <Return>NA<Return/>
+/// <Function> RetriveFrame </Function>
+/// <Description> 把图像内存还给图像获取服务，避免内存泄露</Description>
+/// <Return>NA</Return>
 ////////////////////////////////////////////////////////////////
 extern void RetriveFrame(unsigned char *pframe);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> CloseDevice <Function/>
-/// <Description> 关闭设备<Description/>
-/// <pDev> 设备对象 <pDev/>
-/// <Return>NA<Return/>
+/// <Function> CloseDevice </Function>
+/// <Description> 关闭设备</Description>
+/// <pDev> 设备对象 </pDev>
+/// <Return>NA</Return>
 ////////////////////////////////////////////////////////////////
 extern void CloseDevice(PDevice pDev);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> VideoStart <Function/>
-/// <Description> 开始传输图像<Description/>
-/// <pDev> 设备对象 <pDev/>
-/// <Return>true代表成功，否则失败<Return/>
+/// <Function> VideoStart </Function>
+/// <Description> 开始传输图像</Description>
+/// <pDev> 设备对象 </pDev>
+/// <Return>true代表成功，否则失败</Return>
 ////////////////////////////////////////////////////////////////
 extern bool VideoStart(PDevice pDev);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> VideoStop <Function/>
-/// <Description> 停止传输图像<Description/>
-/// <pDev> 设备对象 <pDev/>
-/// <Return>NA<Return/>
+/// <Function> VideoStop </Function>
+/// <Description> 停止传输图像</Description>
+/// <pDev> 设备对象 </pDev>
+/// <Return>NA</Return>
 ////////////////////////////////////////////////////////////////
 extern void VideoStop(PDevice pDev);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> GetFPS <Function/>
-/// <Description> 获取帧率<Description/>
-/// <pDev> 设备对象 <pDev/>
-/// <Return>NA<Return/>
+/// <Function> GetFPS </Function>
+/// <Description> 获取帧率</Description>
+/// <pDev> 设备对象 </pDev>
+/// <Return>NA</Return>
 ////////////////////////////////////////////////////////////////
 extern float GetFPS(PDevice pDev);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> SetParameter <Function/>
-/// <Description> 设置参数<Description/>
-/// <pDev> 设备对象 <pDev/>
+/// <Function> SetParameter </Function>
+/// <Description> 设置参数</Description>
+/// <pDev> 设备对象 </pDev>
 /// <param> 参数数组 <param/>
 /// <paramLen> 参数数组长度 <paramLen/>
-/// <Return>NA<Return/>
+/// <Return>NA</Return>
 ////////////////////////////////////////////////////////////////
 extern bool SetParameter(PDevice pDev, unsigned char * param, const size_t paramLen);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> SetLED <Function/>
-/// <Description> 控制LED<Description/>
-/// <pDev> 设备对象 <pDev/>
+/// <Function> SetLED </Function>
+/// <Description> 控制LED</Description>
+/// <pDev> 设备对象 </pDev>
 /// <value> LED控制，低9位有效，值为1的位相应的LED亮<value/>
-/// <Return>成功 true，否则false<Return/>
+/// <Return>成功 true，否则false</Return>
 ////////////////////////////////////////////////////////////////
-extern bool SetLED(PDevice pDev, unsigned short value);
+extern int SetLED(PDevice pDev, unsigned short value);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> SetSensorGain <Function/>
-/// <Description> 控制相机增益值<Description/>
-/// <pDev> 设备对象 <pDev/>
+/// <Function> SetSensorGain </Function>
+/// <Description> 控制相机增益值</Description>
+/// <pDev> 设备对象 </pDev>
 /// <value> 增益值，默认值为0x0008，最大0x0063<value/>
-/// <Return>成功 true，否则false<Return/>
+/// <Return>成功 true，否则false</Return>
 ////////////////////////////////////////////////////////////////
 extern bool SetSensorGain(PDevice pDev, unsigned short value);
 
 ////////////////////////////////////////////////////////////////
-/// <Function> InitSersor <Function/>
-/// <Description> 初始化相机<Description/>
-/// <pDev> 设备对象 <pDev/>
-/// <Return>成功 true，否则false<Return/>
+/// <Function> InitSersor </Function>
+/// <Description> 初始化相机</Description>
+/// <pDev> 设备对象 </pDev>
+/// <Return>成功 true，否则false</Return>
 ////////////////////////////////////////////////////////////////
 extern bool InitSersor(PDevice pDev);
