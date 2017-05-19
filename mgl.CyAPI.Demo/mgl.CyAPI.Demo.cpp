@@ -1,5 +1,6 @@
 #include <cstdio>
-
+#include <thread>
+#include <chrono>
 #include "../publish/include/mgl.CyAPI.h"
 #pragma comment(lib, "../publish/lib/az.camera.CoreCyVideoSource.lib")
 ///注意在项目文件属性中 配置属性->生成事件->预先生成事件->命令行 中有设置拷贝运行所需dll
@@ -15,7 +16,12 @@ int main()
         printf("No device found!\n");
         return 0;
     }
-
+    LoadFirmware(nullptr);
+    //更新固件后要等待设备重新连接
+    while(GetDeviceCount() < devCount)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
     // 获取连接的第1个设备描述
     constexpr auto descLen = 256;
     char desc[descLen];

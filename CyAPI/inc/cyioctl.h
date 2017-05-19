@@ -1,18 +1,23 @@
 /*
-
-Copyright (c) 2011  Cypress Semiconductor Corporation
-
-Module Name:
-
-  CyIoclt.h
-
-Additional Notes:
-
-  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
-  KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-  PURPOSE.
-
+ ## Cypress CyAPI C++ library IOCTL defination header file (cyioctl.h)
+ ## =======================================================
+ ##
+ ##  Copyright Cypress Semiconductor Corporation, 2009-2012,
+ ##  All Rights Reserved
+ ##  UNPUBLISHED, LICENSED SOFTWARE.
+ ##
+ ##  CONFIDENTIAL AND PROPRIETARY INFORMATION
+ ##  WHICH IS THE PROPERTY OF CYPRESS.
+ ##
+ ##  Use of this file is governed
+ ##  by the license agreement included in the file
+ ##
+ ##  <install>/license/license.rtf
+ ##
+ ##  where <install> is the Cypress software
+ ##  install root directory path.
+ ##
+ ## =======================================================
 */
 #ifndef __IOCTL_H__
 #define __IOCTL_H__
@@ -21,11 +26,11 @@ Additional Notes:
 #ifndef DRIVER
 
 #ifndef CTL_CODE
- #include <devioctl.h>
+#include <devioctl.h>
 #endif
 
 #ifndef BM_REQUEST_TYPE
- #include "usb200.h"
+#include "usb200.h"
 #endif
 
 #include <PSHPACK1.H>
@@ -36,6 +41,7 @@ Additional Notes:
 #define DEVICE_SPEED_UNKNOWN        0x00000000
 #define DEVICE_SPEED_LOW_FULL       0x00000001
 #define DEVICE_SPEED_HIGH           0x00000002
+#define DEVICE_SPEED_SUPER			0x00000004
 
 typedef struct _WORD_SPLIT {
     UCHAR lowByte;
@@ -50,24 +56,24 @@ typedef struct _BM_REQ_TYPE {
 } BM_REQ_TYPE, *PBM_REQ_TYPE;
 
 typedef struct _SETUP_PACKET {
-    
+
     union {
         BM_REQ_TYPE bmReqType;
         UCHAR bmRequest;
     };
 
     UCHAR bRequest;
-    
+
     union {
         WORD_SPLIT wVal;
         USHORT wValue;
     };
-    
+
     union {
         WORD_SPLIT wIndx;
         USHORT wIndex;
     };
-    
+
     union {
         WORD_SPLIT wLen;
         USHORT wLength;
@@ -83,7 +89,7 @@ typedef struct _SETUP_PACKET {
 #define USB_ISO_CMD_SET_FRAME       0x8002
 
 typedef struct _ISO_ADV_PARAMS {
-    
+
     USHORT isoId;
     USHORT isoCmd;
 

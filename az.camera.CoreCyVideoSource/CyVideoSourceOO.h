@@ -1,6 +1,6 @@
 #pragma once
 #include <windows.h>
-#include <CyAPI.h>
+#include <cyapi.h>
 #include <memory>
 #include <thread>
 #include <opencv2/opencv.hpp>
@@ -23,6 +23,7 @@ struct HeadInfo
     static constexpr int headSize = 80;
 };
 
+using AzUSBDevice = CCyFX3Device;
 class CyVideoSourceOO
 {
 public:
@@ -36,10 +37,12 @@ public:
     static void DeviceDescrption(const int & index, char *pDst, const size_t & dstLen);
     bool SetParam(unsigned char reqCode, unsigned short value, unsigned short index, unsigned char * param, const size_t & paramLen);
     float FPS() const;
+
+    static bool LoadDeviceFirmware();
 private:
     void CoreRecv();
     void CoreCVT();
-    std::shared_ptr<CCyUSBDevice> m_USBDevice;
+    std::shared_ptr<AzUSBDevice> m_USBDevice;
     az::queue<FrameDesc> m_rawFrames;
     az::queue<cv::Mat> m_rgbFrames;
     std::shared_ptr<std::thread> m_recvThd;

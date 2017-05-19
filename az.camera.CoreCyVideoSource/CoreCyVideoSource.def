@@ -17,3 +17,4 @@ SetParameter		@13
 SetLED				@14
 SetSensorGain		@15
 InitSersor			@16
+LoadFirmware		@17

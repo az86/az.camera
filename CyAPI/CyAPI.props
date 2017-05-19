@@ -8,7 +8,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>CyAPI.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>CyAPI.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>legacy_stdio_definitions.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>

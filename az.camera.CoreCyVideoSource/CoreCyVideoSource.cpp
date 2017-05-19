@@ -115,3 +115,9 @@ bool InitSersor(PDevice pDev)
 
         return rval0&& rval1&& rval2&&rval3&&rval4&&rval5&&rval6;
 }
+
+bool LoadFirmware(PDevice pDev)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    return lpDev->LoadDeviceFirmware();
+}

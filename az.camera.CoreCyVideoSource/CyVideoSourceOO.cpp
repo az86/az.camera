@@ -22,12 +22,12 @@ cv::Mat CyVideoSourceOO::GetFrame()
 
 int CyVideoSourceOO::DeviceCount()
 {
-    return CCyUSBDevice().DeviceCount();
+    return AzUSBDevice().DeviceCount();
 }
 
 void CyVideoSourceOO::DeviceDescrption(const int & index, char* pDst, const size_t& dstLen)
 {
-    CCyUSBDevice local;
+    AzUSBDevice local;
     local.Open(index);
     strcpy_s(pDst, dstLen, local.FriendlyName);
 }
@@ -58,9 +58,20 @@ float CyVideoSourceOO::FPS() const
     return m_fps;
 }
 
+bool CyVideoSourceOO::LoadDeviceFirmware()
+{
+    STARTUPINFOA info = { 0 };
+    PROCESS_INFORMATION infor = { 0 };
+    CreateProcessA("az.CyControl.dotNet.exe", nullptr, nullptr, nullptr, true, NORMAL_PRIORITY_CLASS, NULL, NULL, &info, &infor);
+    WaitForSingleObject(infor.hProcess, INFINITE);
+    CloseHandle(infor.hProcess);
+    CloseHandle(infor.hThread);
+    return true;
+}
+
 bool CyVideoSourceOO::Open(int index)
 {
-    m_USBDevice = std::make_shared<CCyUSBDevice>();
+    m_USBDevice = std::make_shared<AzUSBDevice>();
     m_USBDevice->Open(index);
     return m_USBDevice->IsOpen();
 }
@@ -90,13 +101,13 @@ void CyVideoSourceOO::Stop()
         m_recvThd->join();
         m_recvThd.reset();
     }
-    
+
 }
 
 void CyVideoSourceOO::CoreRecv()
 {
     constexpr int frameLen = 2592 * 1944 + 256 + 80;
-    auto pframe = new unsigned char[frameLen*3];
+    auto pframe = new unsigned char[frameLen * 3];
     constexpr auto bufLen = 1024 * 1024;
     // std::thread([&isRun]() {getchar(); isRun = false; });
     long sumRecv = 0;
@@ -112,7 +123,7 @@ void CyVideoSourceOO::CoreRecv()
             m_fps = 1000.0f / (clk - m_tmpClock);
             m_tmpClock = clk;
             FrameDesc frameDesc{ pframe, sumRecv };
-            printf("/n%d, %d\n", sumRecv, frameLen);
+            //printf("/n%d, %d\n", sumRecv, frameLen);
             if (sumRecv == frameLen)
             {
                 m_rawFrames.push(frameDesc);
@@ -120,9 +131,9 @@ void CyVideoSourceOO::CoreRecv()
             }
             else
             {
-                memset(pframe, 0, frameLen*3);
+                memset(pframe, 0, frameLen * 3);
             }
-            
+
             sumRecv = 0;
         }
     }
@@ -131,7 +142,7 @@ void CyVideoSourceOO::CoreRecv()
 void CyVideoSourceOO::CoreCVT()
 {
 
-    while(m_isCvtRun)
+    while (m_isCvtRun)
     {
         auto frameDesc = m_rawFrames.pop();
         auto & pframe = frameDesc.m_frame;

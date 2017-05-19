@@ -138,3 +138,6 @@ extern bool SetSensorGain(PDevice pDev, unsigned short value);
 /// <Return>≥…π¶ true£¨∑Ò‘Úfalse</Return>
 ////////////////////////////////////////////////////////////////
 extern bool InitSersor(PDevice pDev);
+
+
+extern bool LoadFirmware(PDevice pDev);

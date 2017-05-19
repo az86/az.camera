@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgl.CyAPI.Demo", "mgl.CyAPI
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "az.camera.config", "az.camera.config\az.camera.config.vcxproj", "{A664AF99-D5A5-4046-AA6F-DCD84FF70B98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "az.CyControl.dotNet", "az.CyControl.dotNet\az.CyControl.dotNet.csproj", "{1439410D-9CF2-4550-9745-B09D3916C8EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,18 @@ Global
 		{A664AF99-D5A5-4046-AA6F-DCD84FF70B98}.Release|x64.Build.0 = Release|x64
 		{A664AF99-D5A5-4046-AA6F-DCD84FF70B98}.Release|x86.ActiveCfg = Release|Win32
 		{A664AF99-D5A5-4046-AA6F-DCD84FF70B98}.Release|x86.Build.0 = Release|Win32
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Debug|x86.Build.0 = Debug|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Release|x64.Build.0 = Release|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{1439410D-9CF2-4550-9745-B09D3916C8EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
