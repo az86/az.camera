@@ -16,7 +16,13 @@ namespace az.CyControl.dotNet
             foreach (var dev in usbDevices)
             {
                 var fxDev = dev as CyFX2Device;
-                var devId = fxDev.ProductID.ToString();
+                Console.WriteLine(fxDev.ProductID.ToString("X"));
+            }
+            //return;
+            foreach (var dev in usbDevices)
+            {
+                var fxDev = dev as CyFX2Device;
+                var devId = fxDev.ProductID.ToString("X");
                 var hexFilePath = ConfigurationManager.AppSettings[devId];
                 if (string.IsNullOrEmpty(hexFilePath))
                 {
