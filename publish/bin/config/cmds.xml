@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="14">
+<configs class_id="0" tracking_level="0" version="0">
+	<count>1</count>
+	<item_version>0</item_version>
+	<item class_id="1" tracking_level="0" version="0">
+		<first>SET 1080P</first>
+		<second class_id="2" tracking_level="0" version="0">
+			<count>10</count>
+			<item_version>0</item_version>
+			<item class_id="3" tracking_level="0" version="0">
+				<reqCode>b4</reqCode>
+				<value>b</value>
+				<index>2</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>b</value>
+				<index>3</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>f0</value>
+				<index>0</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>1</value>
+				<index>1e2</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>2</value>
+				<index>162</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>3</value>
+				<index>437</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>4</value>
+				<index>77f</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>22</value>
+				<index>0</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>23</value>
+				<index>0</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>5</value>
+				<index>50</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>6</value>
+				<index>19</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>20</value>
+				<index>40</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>8</value>
+				<index>0</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>9</value>
+				<index>0x0353</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>b</value>
+				<index>1</index>
+			</item>
+			<item>
+				<reqCode>b4</reqCode>
+				<value>7</value>
+				<index>1f82</index>
+			</item>
+		</second>
+	</item>
+</configs>
+</boost_serialization>
+
