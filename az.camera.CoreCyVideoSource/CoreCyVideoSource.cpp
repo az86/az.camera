@@ -1,6 +1,6 @@
 #include <cstdio>
 #include "CyVideoSourceOO.h"
-
+#include <CommandConfig.h>
 typedef void * PDevice;
 
 int GetDeviceCount()
@@ -120,4 +120,14 @@ bool LoadFirmware(PDevice pDev)
 {
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
     return lpDev->LoadDeviceFirmware();
+}
+bool SetSensor1080P(PDevice pDev)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    auto rval = true;
+    for (auto &it : CommandConfig::Instance().configs["SET 1080p"])
+    {
+        rval = rval && lpDev->SetParam(it.reqCode, it.value, it.index, nullptr, 0);
+    }
+    return rval;
 }
