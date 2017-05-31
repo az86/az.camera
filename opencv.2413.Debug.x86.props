@@ -5,8 +5,8 @@
     <OpencvDir>C:\Library\opencv\openncv_2_4_13_2\build\x86\vc14\</OpencvDir>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>c:\Library\opencv\openncv_2_4_13_2\build\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Library\opencv\openncv_2_4_13_2\build\x86\vc14\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>c:\Library\opencv\opencv_2_4_13_2\build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Library\opencv\opencv_2_4_13_2\build\x86\vc14\lib;$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
