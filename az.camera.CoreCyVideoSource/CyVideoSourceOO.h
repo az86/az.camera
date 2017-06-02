@@ -16,8 +16,8 @@ struct HeadInfo
 {
     unsigned short check0;//0x5a5a
     unsigned short check1;//0xa5a5
-    unsigned short width;
     unsigned short height;
+    unsigned short width;
     unsigned pixelCount;
     unsigned index;
     static constexpr int headSize = 80;

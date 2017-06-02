@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <OpencvDir>C:\Library\opencv\openncv_2_4_13_2\build\x86\vc14\</OpencvDir>
+    <OpencvDir>C:\Library\opencv\opencv_2_4_13_2\build\x86\vc14\</OpencvDir>
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>c:\Library\opencv\opencv_2_4_13_2\build\include;$(IncludePath)</IncludePath>
@@ -15,8 +15,12 @@
     </Link>
     <ClCompile />
     <PostBuildEvent>
-      <Command>copy $(OpencvDir)bin\opencv*d.dll  $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>copy $(OpencvDir)bin\opencv*d.dll  $(TargetDir)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="OpencvDir">

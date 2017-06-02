@@ -45,22 +45,28 @@ int main()
         printf("No device found!\n");
         return 0;
     }
- //   LoadFirmware(nullptr);
+    LoadFirmware(nullptr);
     //更新固件后要等待设备重新连接
     while(GetDeviceCount() < devCount)
     {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-    // 获取连接的第1个设备描述
-    constexpr auto descLen = 256;
-    char desc[descLen];
-    GetDeviceDescrption(0, desc, descLen); //第一个参数指定获取第几个设备描述
-    printf("device count = %d : %s\n", devCount, desc);
-    std::thread th0(std::bind(play, 0));
-    std::thread th1(std::bind(play, 1));
-    th0.join();
-    th1.join();
-    
+    std::vector<std::shared_ptr<std::thread>> ths;
+    for (auto i = 0; i < devCount; i++)
+    {
+        // 获取连接的第i个设备描述
+        constexpr auto descLen = 256;
+        char desc[descLen];
+        GetDeviceDescrption(0, desc, descLen); //第一个参数指定获取第几个设备描述
+        printf("device count = %d : %s\n", devCount, desc);
+        auto th = std::make_shared<std::thread> (std::bind(play, i));
+        ths.push_back(th);
+    }
+
+    for (auto th : ths)
+    {
+        th->join();
+    }
     printf("\n press any key to quit...\n");
     getchar();
 }

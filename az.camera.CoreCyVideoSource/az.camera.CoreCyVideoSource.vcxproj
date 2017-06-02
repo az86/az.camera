@@ -102,16 +102,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>CoreCyVideoSource.def</ModuleDefinitionFile>
     </Link>
+    <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(OpencvDir)bin\opencv*.dll  $(TargetDir)
-
-copy $(OpencvDir)bin\opencv*.dll  ..\publish\bin
-
-copy $(TargetDir)\*.dll  ..\publish\bin
-
-copy $(TargetDir)\*.lib ..\publish\lib
-
-copy mgl.CyAPI.h ..\publish\include\mgl.CyAPI.h</Command>
+      <Command>copy $(TargetDir)*.dll ..\publish\bin\
+copy $(TargetDir)$(TargetName).lib ..\publish\lib\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -150,18 +144,10 @@ copy mgl.CyAPI.h ..\publish\include\mgl.CyAPI.h</Command>
       <ModuleDefinitionFile>CoreCyVideoSource.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(OpencvDir)bin\opencv*.dll  $(TargetDir)
-del $(TargetDir)opencv*d.dll 
-
-copy $(OpencvDir)bin\opencv*.dll  ..\publish\bin
-del ..\publish\bin\opencv*d.dll 
-
-copy $(TargetDir)\*.dll  ..\publish\bin
-
-copy $(TargetDir)\*.lib ..\publish\lib
-
-copy mgl.CyAPI.h ..\publish\include\mgl.CyAPI.h</Command>
+      <Command>copy $(TargetDir)*.dll ..\publish\bin\
+copy $(TargetDir)$(TargetName).lib ..\publish\lib\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
