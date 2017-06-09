@@ -1,5 +1,6 @@
 #include <functional>
 #include <vector>
+#include <mutex>
 #include "CyVideoSourceOO.h"
 
 CyVideoSourceOO::CyVideoSourceOO()
@@ -36,6 +37,9 @@ void CyVideoSourceOO::DeviceDescrption(const int & index, char* pDst, const size
 
 bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsigned short index, unsigned char * param, const size_t& paramLen)
 {
+    static std::mutex logMutex;
+    logMutex.lock();
+    printf("dev [%p] set param: req: 0x%02x, value: 0x%04x, index: 0x%04x, param: %s, length: %u ", this, reqCode, value, index, param, paramLen);
     if (!m_USBDevice->IsOpen())
         return false;
     auto state = m_isRecvRun;
@@ -50,8 +54,10 @@ bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsi
     ept->Index = index;// 0;
     long len = paramLen;
     auto r = ept->XferData(param, len);
+    logMutex.unlock();
     if (state == true)
         Start();
+    printf("%s!\n", r ? "ok" : "failed");
     return r;
 }
 
@@ -139,7 +145,7 @@ void CyVideoSourceOO::CoreRecv()
                 else
                 {
 #ifdef _DEBUG
-                    printf("bad img data over stack\n");
+//                    printf("bad img data over stack\n");
 #endif
                     memset(pframe, 0, maxFrameLen);
                     pbegin = pframe;
@@ -188,7 +194,7 @@ void CyVideoSourceOO::CoreCVT()
         if ((unsigned)size < pheader->pixelCount + pheader->headSize)
         {
 #ifdef _DEBUG
-            printf("bad img data lost\n");
+ //           printf("bad img data lost\n");
 #endif
             continue;
         }

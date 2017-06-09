@@ -125,7 +125,8 @@ bool SetSensor1080P(PDevice pDev)
 {
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
     auto rval = true;
-    for (auto &it : CommandConfig::Instance().configs["SET 1080p"])
+    auto &ins  = CommandConfig::Instance();
+    for (auto &it : CommandConfig::Instance().configs["SET 1080P"])
     {
         rval = rval && lpDev->SetParam(it.reqCode, it.value, it.index, nullptr, 0);
     }
