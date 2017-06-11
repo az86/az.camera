@@ -196,6 +196,7 @@ void CyVideoSourceOO::CoreCVT()
 #ifdef _DEBUG
  //           printf("bad img data lost\n");
 #endif
+            delete[] pframe;
             continue;
         }
         //printf("check0=%x, check1=%x, width=%d, height=%d, pixelCount=%d, index=%d\n", pheader->check0, pheader->check1, pheader->width, pheader->height, pheader->pixelCount, pheader->index);
