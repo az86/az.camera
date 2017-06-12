@@ -105,7 +105,8 @@
     <PostBuildEvent />
     <PostBuildEvent>
       <Command>copy $(TargetDir)*.dll ..\publish\bin\
-copy $(TargetDir)$(TargetName).lib ..\publish\lib\</Command>
+copy $(TargetDir)$(TargetName).lib ..\publish\lib\
+copy mgl.CyAPI.h ..\publish\include\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -147,7 +148,8 @@ copy $(TargetDir)$(TargetName).lib ..\publish\lib\</Command>
     <PostBuildEvent />
     <PostBuildEvent>
       <Command>copy $(TargetDir)*.dll ..\publish\bin\
-copy $(TargetDir)$(TargetName).lib ..\publish\lib\</Command>
+copy $(TargetDir)$(TargetName).lib ..\publish\lib\
+copy mgl.CyAPI.h ..\publish\include\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

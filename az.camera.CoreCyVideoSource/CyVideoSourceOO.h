@@ -33,6 +33,8 @@ public:
     bool Open(int index);
     bool Start();
     void Stop();
+    ushort CoreGetProductID();
+
     static int DeviceCount();
     static void DeviceDescrption(const int & index, char *pDst, const size_t & dstLen);
     bool SetParam(unsigned char reqCode, unsigned short value, unsigned short index, unsigned char * param, const size_t & paramLen);

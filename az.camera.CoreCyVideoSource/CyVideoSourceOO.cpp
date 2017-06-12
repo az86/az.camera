@@ -112,6 +112,11 @@ void CyVideoSourceOO::Stop()
 
 }
 
+ushort CyVideoSourceOO::CoreGetProductID()
+{
+    return m_USBDevice->ProductID;
+}
+
 void CyVideoSourceOO::CoreRecv()
 {
     constexpr int maxFrameLen = 2592 * 1944 + 256 + 80;

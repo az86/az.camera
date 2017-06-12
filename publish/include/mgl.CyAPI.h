@@ -154,3 +154,11 @@ extern bool LoadFirmware(PDevice pDev);
 /// <Return>成功 true，否则false</Return>
 ////////////////////////////////////////////////////////////////
 extern bool SetSensor1080P(PDevice pDev);
+
+////////////////////////////////////////////////////////////////
+/// <Function> GetProductID </Function>
+/// <Description> 获取设备id</Description>
+/// <pDev> 设备对象 </pDev>
+/// <Return>Product ID</Return>
+////////////////////////////////////////////////////////////////
+extern unsigned short GetProductID(PDevice pDev);

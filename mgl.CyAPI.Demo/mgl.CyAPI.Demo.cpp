@@ -138,12 +138,25 @@ void playcmd()
                 SetLED(std::get<0>(dev), val);
             }
         }
+        else if (strstr(buf, "id") == buf)
+        {
+            std::lock_guard<std::mutex> lckVec(muVector);
+            int val;
+            sscanf_s(buf, "id %d", &val);
+            for (auto &dev : gDevs)
+            {
+                std::lock_guard<std::mutex> lg(*std::get<1>(dev));
+                auto val = GetProductID(std::get<0>(dev));
+                printf("device %p:product id is 0x%X\n", std::get<0>(dev), val);
+            }
+        }
         else if (strcmp(buf, "?") == 0)
         {
             printf("fps:\n\tget fps\n");
             printf("1080p:\n\tset 1080p mode.\n");
             printf("gain [number]:\n\tset gain value.\n");
             printf("led [number]:\n\tset led value.\n");
+            printf("id:\n\tget product id value.\n");
             printf("exit:\n\texit the process.\n");
         }
         else if (strcmp(buf, "exit") == 0)

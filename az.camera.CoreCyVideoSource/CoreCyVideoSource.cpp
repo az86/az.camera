@@ -132,3 +132,10 @@ bool SetSensor1080P(PDevice pDev)
     }
     return rval;
 }
+
+unsigned short GetProductID(PDevice pDev)
+{
+    auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
+    return lpDev->CoreGetProductID();
+
+}
