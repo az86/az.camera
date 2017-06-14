@@ -117,7 +117,7 @@ extern bool SetParameter(PDevice pDev, unsigned char * param, const size_t param
 /// <Function> SetLED </Function>
 /// <Description> 控制LED</Description>
 /// <pDev> 设备对象 </pDev>
-/// <value> LED控制，低9位有效，值为1的位相应的LED亮<value/>
+/// <value> 输入参数的低8位控制8个620nm灯,输入参数的高8位用来控制1个850nm灯的，亮度是可以调试的。当高8位 = 0xF0时，850nm灯是最暗的，当高8位 = 0xF1时，850nm灯是比最暗的情况亮度增加了一点，当高8位 = 0xF2时，850nm灯是亮度双增加了一点，当高8位 = 0xFE时，850nm灯是非常亮的，当高8位 = 0xFF时，850nm灯是最亮的。<value/>
 /// <Return>成功 true，否则false</Return>
 ////////////////////////////////////////////////////////////////
 extern int SetLED(PDevice pDev, unsigned short value);

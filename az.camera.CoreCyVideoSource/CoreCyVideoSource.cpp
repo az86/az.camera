@@ -87,7 +87,6 @@ bool SetParameter(PDevice pDev, unsigned char * param, const size_t paramLen)
 int SetLED(PDevice pDev, unsigned short value)
 {
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
-    value &= 0x1FF;
     if (lpDev->SetParam(0xB5, 0x009A, value, nullptr, 0))
         return value;
     return 0;
