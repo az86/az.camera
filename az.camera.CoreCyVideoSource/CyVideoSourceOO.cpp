@@ -1,4 +1,6 @@
 #include <functional>
+#include <vector>
+#include <mutex>
 #include "CyVideoSourceOO.h"
 
 CyVideoSourceOO::CyVideoSourceOO()
@@ -30,10 +32,14 @@ void CyVideoSourceOO::DeviceDescrption(const int & index, char* pDst, const size
     AzUSBDevice local;
     local.Open(index);
     strcpy_s(pDst, dstLen, local.FriendlyName);
+    local.Close();
 }
 
 bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsigned short index, unsigned char * param, const size_t& paramLen)
 {
+    static std::mutex logMutex;
+    logMutex.lock();
+    printf("dev [%p] set param: req: 0x%02x, value: 0x%04x, index: 0x%04x, param: %s, length: %u ", this, reqCode, value, index, param, paramLen);
     if (!m_USBDevice->IsOpen())
         return false;
     auto state = m_isRecvRun;
@@ -48,8 +54,10 @@ bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsi
     ept->Index = index;// 0;
     long len = paramLen;
     auto r = ept->XferData(param, len);
+    logMutex.unlock();
     if (state == true)
         Start();
+    printf("%s!\n", r ? "ok" : "failed");
     return r;
 }
 
@@ -104,38 +112,77 @@ void CyVideoSourceOO::Stop()
 
 }
 
+ushort CyVideoSourceOO::CoreGetProductID()
+{
+    return m_USBDevice->ProductID;
+}
+
 void CyVideoSourceOO::CoreRecv()
 {
-    constexpr int frameLen = 2592 * 1944 + 256 + 80;
-    auto pframe = new unsigned char[frameLen * 3];
-    constexpr auto bufLen = 1024 * 1024;
-    // std::thread([&isRun]() {getchar(); isRun = false; });
-    long sumRecv = 0;
+    constexpr int maxFrameLen = 2592 * 1944 + 256 + 80;
+    auto pframe = new unsigned char[maxFrameLen];
+    const auto bufLen = m_USBDevice->BulkInEndPt->MaxPktSize * 1024;
+    constexpr auto queueSize = 64;
+    OVERLAPPED ovs[queueSize] = { 0 };
+    std::shared_ptr<unsigned char> bufs[queueSize];
+    unsigned char * contexts[queueSize];
+    for (auto i = 0; i < queueSize; i++)
+    {
+        bufs[i] = std::shared_ptr<unsigned char>(new unsigned char[bufLen], [](auto ptr) {delete[]ptr; });
+        ovs[i].hEvent = CreateEventA(nullptr, false, false, nullptr);
+        contexts[i] = m_USBDevice->BulkInEndPt->BeginDataXfer(bufs[i].get(), bufLen, ovs + i);
+    }
+    auto pbegin = pframe;
+    auto pend = pframe + maxFrameLen;
     while (m_isRecvRun)
     {
-        auto pbuf = pframe + sumRecv;
-        long recv = bufLen;
-        m_USBDevice->BulkInEndPt->XferData(pbuf, recv);
-        sumRecv += recv;
-        if (recv % 512 != 0)
+        for (auto i = 0; i != queueSize; i++)
         {
-            auto clk = clock();
-            m_fps = 1000.0f / (clk - m_tmpClock);
-            m_tmpClock = clk;
-            FrameDesc frameDesc{ pframe, sumRecv };
-            //printf("/n%d, %d\n", sumRecv, frameLen);
-            if (sumRecv == frameLen)
+            if (m_USBDevice->BulkInEndPt->WaitForXfer(ovs + i, 1000))
             {
-                m_rawFrames.push(frameDesc);
-                pframe = new unsigned char[frameLen * 3];
-            }
-            else
-            {
-                memset(pframe, 0, frameLen * 3);
+                long len = 0;
+                m_USBDevice->BulkInEndPt->FinishDataXfer(bufs[i].get(), len, ovs + i, contexts[i]);
+                if (pbegin + len <= pend)
+                {
+                    memcpy(pbegin, bufs[i].get(), len);
+                    pbegin += len;
+                }
+                else
+                {
+#ifdef _DEBUG
+//                    printf("bad img data over stack\n");
+#endif
+                    memset(pframe, 0, maxFrameLen);
+                    pbegin = pframe;
+
+                }
+                contexts[i] = m_USBDevice->BulkInEndPt->BeginDataXfer(bufs[i].get(), bufLen, ovs + i);
+
+                if (len % 512 != 0)
+                {
+                    auto clk = clock();
+                    m_fps = 1000.0f / (clk - m_tmpClock);
+                    m_tmpClock = clk;
+                    FrameDesc frameDesc{ pframe, pbegin - pframe };
+                    //printf("/n%d, %d\n", sumRecv, frameLen);
+                    if (frameDesc.m_frameSize > 0)
+                    {
+                        m_rawFrames.push(frameDesc);
+                        pframe = new unsigned char[maxFrameLen];
+                    }
+                    memset(pframe, 0, maxFrameLen);
+                    pbegin = pframe;
+                    pend = pframe + maxFrameLen;
+                }
             }
 
-            sumRecv = 0;
         }
+    }
+    for (auto i = 0; i != queueSize; i++)
+    {
+        long len = 0;
+        m_USBDevice->BulkInEndPt->FinishDataXfer(bufs[i].get(), len, ovs + i, contexts[i]);
+        CloseHandle(ovs[i].hEvent);
     }
 }
 
@@ -149,6 +196,14 @@ void CyVideoSourceOO::CoreCVT()
         auto & size = frameDesc.m_frameSize;
         //printf("one frame got, %d! img 2592*1944 = %d, diff is %d\n,", size, 2592 * 1944, size - 2592 * 1944);
         HeadInfo* pheader = (HeadInfo*)(pframe + size - HeadInfo::headSize);
+        if ((unsigned)size < pheader->pixelCount + pheader->headSize)
+        {
+#ifdef _DEBUG
+ //           printf("bad img data lost\n");
+#endif
+            delete[] pframe;
+            continue;
+        }
         //printf("check0=%x, check1=%x, width=%d, height=%d, pixelCount=%d, index=%d\n", pheader->check0, pheader->check1, pheader->width, pheader->height, pheader->pixelCount, pheader->index);
         cv::Mat i(pheader->height, pheader->width, CV_8UC1, pframe);
         cv::Mat o(pheader->height, pheader->width, CV_8UC3);

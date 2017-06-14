@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>C:\Camera\az.camera\CyAPI\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Camera\az.camera\CyAPI\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)CyAPI\cpp\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)CyAPI\cpp\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
