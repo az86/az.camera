@@ -131,7 +131,7 @@ void playcmd()
         {
             std::lock_guard<std::mutex> lckVec(muVector);
             int val;
-            sscanf_s(buf, "led %d", &val);
+            sscanf_s(buf, "led 0x%x", &val);
             for (auto &dev : gDevs)
             {
                 std::lock_guard<std::mutex> lg(*std::get<1>(dev));
