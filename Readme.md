@@ -1,19 +1,19 @@
-ï»¿# è¯´æ˜
-## 1ã€SDKçš„å¤´æ–‡ä»¶:    publish\include\mgl.CyAPI.h 
-## 2ã€SDKçš„libæ–‡ä»¶:   publish\lib\az.camera.CoreCyVideoSource.lib
-## 3ã€SDKæ‰€éœ€dllæ–‡ä»¶ï¼špublish\bin\*.dll
-## 4ã€ç¨‹åºè¯·åœ¨x86ç¯å¢ƒä¸‹ç¼–è¯‘ã€‚
-## 5ã€å‡½æ•°å…·ä½“è¯´æ˜è§publish\include\mgl.CyAPI.hå‡½æ•°å¤´æ³¨é‡Š
-## 6ã€ä½¿ç”¨æ–¹æ³•è§mgl.CyAPI.Demo
-## 7ã€è¿è¡ŒReleaseä¸‹ mgl.CyAPI.Demo.exe å¯ä»¥è¿è¡Œdemoç¨‹åºã€‚
-## 8ã€ç®€è¦å‡½æ•°è¯´æ˜ï¼š
-  ### 1ï¼‰è·å–è¿æ¥çš„è®¾å¤‡æ•°é‡ int GetDeviceCount();
-  ### 2ï¼‰è·å–è®¾å¤‡æè¿° void GetDeviceDescrption(const int index, char* pDst, const size_t dstLen);
-  ### 3ï¼‰æ‰“å¼€çš„è®¾å¤‡å¯¹è±¡ PDevice OpenDevice (const int deviceIndex);
-  ### 4ï¼‰è·å–ä¸€å¸§å›¾åƒæ•°æ®åŒ…ï¼Œunsigned char * QuaryFrame(PDevice pDev),ä½¿ç”¨å®Œæ¯•åéœ€è¦è°ƒç”¨RetriveFrameé”€æ¯å›¾åƒå†…å­˜ï¼Œé¿å…å†…å­˜æ³„éœ²;
-  ### 5ï¼‰ä»ä¸€å¸§å›¾åƒæ•°æ®åŒ…ä¸­è·å–å›¾åƒçš„å®½åº¦ int GetImgWidth(unsigned char * pframe);
-  ### 6ï¼‰ä»ä¸€å¸§å›¾åƒæ•°æ®åŒ…ä¸­è·å–å›¾åƒçš„é«˜åº¦ int GetImgHeight(unsigned char * pframe);
-  ### 7ï¼‰ä»ä¸€å¸§å›¾åƒæ•°æ®åŒ…ä¸­è·å–å›¾åƒæ•°æ® unsigned char * GetImg(unsigned char * pframe);
-  ### 8ï¼‰æŠŠå›¾åƒå†…å­˜è¿˜ç»™å›¾åƒè·å–æœåŠ¡ï¼Œé¿å…å†…å­˜æ³„éœ² void RetriveFrame(unsigned char *pframe);
-  ### 9ï¼‰å…³é—­è®¾å¤‡ void CloseDevice(PDevice pDev);
+# ËµÃ÷
+## 1¡¢SDKµÄÍ·ÎÄ¼ş:    publish\include\mgl.CyAPI.h 
+## 2¡¢SDKµÄlibÎÄ¼ş:   publish\lib\az.camera.CoreCyVideoSource.lib
+## 3¡¢SDKËùĞèdllÎÄ¼ş£ºpublish\bin\*.dll
+## 4¡¢³ÌĞòÇëÔÚx86»·¾³ÏÂ±àÒë¡£
+## 5¡¢º¯Êı¾ßÌåËµÃ÷¼ûpublish\include\mgl.CyAPI.hº¯ÊıÍ·×¢ÊÍ
+## 6¡¢Ê¹ÓÃ·½·¨¼ûmgl.CyAPI.Demo
+## 7¡¢ÔËĞĞReleaseÏÂ mgl.CyAPI.Demo.exe ¿ÉÒÔÔËĞĞdemo³ÌĞò¡£
+## 8¡¢¼òÒªº¯ÊıËµÃ÷£º
+  ### 1£©»ñÈ¡Á¬½ÓµÄÉè±¸ÊıÁ¿ int GetDeviceCount();
+  ### 2£©»ñÈ¡Éè±¸ÃèÊö void GetDeviceDescrption(const int index, char* pDst, const size_t dstLen);
+  ### 3£©´ò¿ªµÄÉè±¸¶ÔÏó PDevice OpenDevice (const int deviceIndex);
+  ### 4£©»ñÈ¡Ò»Ö¡Í¼ÏñÊı¾İ°ü£¬unsigned char * QuaryFrame(PDevice pDev),Ê¹ÓÃÍê±ÏºóĞèÒªµ÷ÓÃRetriveFrameÏú»ÙÍ¼ÏñÄÚ´æ£¬±ÜÃâÄÚ´æĞ¹Â¶;
+  ### 5£©´ÓÒ»Ö¡Í¼ÏñÊı¾İ°üÖĞ»ñÈ¡Í¼ÏñµÄ¿í¶È int GetImgWidth(unsigned char * pframe);
+  ### 6£©´ÓÒ»Ö¡Í¼ÏñÊı¾İ°üÖĞ»ñÈ¡Í¼ÏñµÄ¸ß¶È int GetImgHeight(unsigned char * pframe);
+  ### 7£©´ÓÒ»Ö¡Í¼ÏñÊı¾İ°üÖĞ»ñÈ¡Í¼ÏñÊı¾İ unsigned char * GetImg(unsigned char * pframe);
+  ### 8£©°ÑÍ¼ÏñÄÚ´æ»¹¸øÍ¼Ïñ»ñÈ¡·şÎñ£¬±ÜÃâÄÚ´æĞ¹Â¶ void RetriveFrame(unsigned char *pframe);
+  ### 9£©¹Ø±ÕÉè±¸ void CloseDevice(PDevice pDev);
 
