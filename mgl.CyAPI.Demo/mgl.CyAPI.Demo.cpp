@@ -59,6 +59,7 @@ void play(int index, bool *isRun)
 {
     char winName[64];
     sprintf_s(winName, 64, "%d", index);
+	cv::namedWindow(winName, cv::WINDOW_NORMAL);
 
     std::mutex muDev;
     auto pDev = OpenDevice(index);// 打开第一个设备
