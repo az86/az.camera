@@ -19,12 +19,8 @@ namespace az
         void push(T& obj) 
         {
             std::lock_guard<std::mutex> lock{ mutex };
-            if (m_queue.empty())
-            {
-                m_queue.push(obj);
-                //printf("buffer count = %d", m_queue.size());
-                condition.notify_one();
-            }
+			m_queue.push(obj);
+			condition.notify_one();
         }
     private:
         std::queue<T> m_queue;
