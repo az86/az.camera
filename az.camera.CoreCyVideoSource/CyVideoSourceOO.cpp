@@ -24,15 +24,15 @@ cv::Mat CyVideoSourceOO::GetFrame()
 
 int CyVideoSourceOO::DeviceCount()
 {
-    return AzUSBDevice().DeviceCount();
+	return 2; // AzUSBDevice().DeviceCount();
 }
 
 void CyVideoSourceOO::DeviceDescrption(const int & index, char* pDst, const size_t& dstLen)
 {
-    AzUSBDevice local;
-    local.Open(index);
-    strcpy_s(pDst, dstLen, local.FriendlyName);
-    local.Close();
+   // AzUSBDevice local;
+  //  local.Open(index);
+    strcpy_s(pDst, dstLen, "test device");
+   // local.Close();
 }
 
 bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsigned short index, unsigned char * param, const size_t& paramLen)
@@ -40,20 +40,21 @@ bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsi
     static std::mutex logMutex;
     logMutex.lock();
     printf("dev [%p] set param: req: 0x%02x, value: 0x%04x, index: 0x%04x, param: %s, length: %u ", this, reqCode, value, index, param, paramLen);
-    if (!m_USBDevice->IsOpen())
-        return false;
+    //if (!m_USBDevice->IsOpen())
+    //    return false;
     auto state = m_isRecvRun;
     if (state == true)
         Stop();
-    auto ept = m_USBDevice->ControlEndPt;
-    ept->Target = TGT_DEVICE;
-    ept->ReqType = REQ_VENDOR;
-    ept->Direction = DIR_TO_DEVICE;
-    ept->ReqCode = reqCode;// 0x05;
-    ept->Value = value;// 1;
-    ept->Index = index;// 0;
-    long len = paramLen;
-    auto r = ept->XferData(param, len);
+    //auto ept = m_USBDevice->ControlEndPt;
+    //ept->Target = TGT_DEVICE;
+    //ept->ReqType = REQ_VENDOR;
+    //ept->Direction = DIR_TO_DEVICE;
+    //ept->ReqCode = reqCode;// 0x05;
+    //ept->Value = value;// 1;
+    //ept->Index = index;// 0;
+    //long len = paramLen;
+    //auto r = ept->XferData(param, len);
+	auto r = true;
     logMutex.unlock();
     if (state == true)
         Start();
@@ -68,31 +69,32 @@ float CyVideoSourceOO::FPS() const
 
 bool CyVideoSourceOO::LoadDeviceFirmware()
 {
-    STARTUPINFOA info = { 0 };
-    PROCESS_INFORMATION infor = { 0 };
-    CreateProcessA("az.CyControl.dotNet.exe", nullptr, nullptr, nullptr, true, NORMAL_PRIORITY_CLASS, NULL, NULL, &info, &infor);
-    WaitForSingleObject(infor.hProcess, INFINITE);
-    CloseHandle(infor.hProcess);
-    CloseHandle(infor.hThread);
+    //STARTUPINFOA info = { 0 };
+    //PROCESS_INFORMATION infor = { 0 };
+    //CreateProcessA("az.CyControl.dotNet.exe", nullptr, nullptr, nullptr, true, NORMAL_PRIORITY_CLASS, NULL, NULL, &info, &infor);
+    //WaitForSingleObject(infor.hProcess, INFINITE);
+    //CloseHandle(infor.hProcess);
+    //CloseHandle(infor.hThread);
     return true;
 }
 
 bool CyVideoSourceOO::Open(int index)
 {
-    m_USBDevice = std::make_shared<AzUSBDevice>();
-    m_USBDevice->Open(index);
-    return m_USBDevice->IsOpen();
+    //m_USBDevice = std::make_shared<AzUSBDevice>();
+    //m_USBDevice->Open(index);
+    return true;
 }
 
 bool CyVideoSourceOO::Start()
 {
-    if (m_USBDevice->IsOpen())
+   // if (m_USBDevice->IsOpen())
     {
         m_isCvtRun = m_isRecvRun = true;
         m_recvThd = std::make_shared<std::thread>(std::bind(&CyVideoSourceOO::CoreRecv, this));
         m_cvtThd = std::make_shared<std::thread>(std::bind(&CyVideoSourceOO::CoreCVT, this));
     }
-    return m_USBDevice->IsOpen();
+	return true;
+    //return m_USBDevice->IsOpen();
 }
 
 void CyVideoSourceOO::Stop()
@@ -114,14 +116,15 @@ void CyVideoSourceOO::Stop()
 
 ushort CyVideoSourceOO::CoreGetProductID()
 {
-    return m_USBDevice->ProductID;
+	return 12345;//m_USBDevice->ProductID;
 }
 
 void CyVideoSourceOO::CoreRecv()
 {
     constexpr int maxFrameLen = 2592 * 1944 + 256 + 80;
     auto pframe = new unsigned char[maxFrameLen];
-    const auto bufLen = m_USBDevice->BulkInEndPt->MaxPktSize * 1024;
+	// const auto bufLen = m_USBDevice->BulkInEndPt->MaxPktSize * 1024;
+	 const auto bufLen = 512* 1024;
     constexpr auto queueSize = 64;
     OVERLAPPED ovs[queueSize] = { 0 };
     std::shared_ptr<unsigned char> bufs[queueSize];
@@ -130,7 +133,7 @@ void CyVideoSourceOO::CoreRecv()
     {
         bufs[i] = std::shared_ptr<unsigned char>(new unsigned char[bufLen], [](auto ptr) {delete[]ptr; });
         ovs[i].hEvent = CreateEventA(nullptr, false, false, nullptr);
-        contexts[i] = m_USBDevice->BulkInEndPt->BeginDataXfer(bufs[i].get(), bufLen, ovs + i);
+        //contexts[i] = m_USBDevice->BulkInEndPt->BeginDataXfer(bufs[i].get(), bufLen, ovs + i);
     }
     auto pbegin = pframe;
     auto pend = pframe + maxFrameLen;
@@ -138,10 +141,11 @@ void CyVideoSourceOO::CoreRecv()
     {
         for (auto i = 0; i != queueSize; i++)
         {
-            if (m_USBDevice->BulkInEndPt->WaitForXfer(ovs + i, 1000))
+            if (true)//m_USBDevice->BulkInEndPt->WaitForXfer(ovs + i, 1000))
             {
-                long len = 0;
-                m_USBDevice->BulkInEndPt->FinishDataXfer(bufs[i].get(), len, ovs + i, contexts[i]);
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                long len = 512*1024;
+               // m_USBDevice->BulkInEndPt->FinishDataXfer(bufs[i].get(), len, ovs + i, contexts[i]);
                 if (pbegin + len <= pend)
                 {
                     memcpy(pbegin, bufs[i].get(), len);
@@ -156,14 +160,15 @@ void CyVideoSourceOO::CoreRecv()
                     pbegin = pframe;
 
                 }
-                contexts[i] = m_USBDevice->BulkInEndPt->BeginDataXfer(bufs[i].get(), bufLen, ovs + i);
+               // contexts[i] = m_USBDevice->BulkInEndPt->BeginDataXfer(bufs[i].get(), bufLen, ovs + i);
 
-                if (len % 512 != 0)
+				//if (len % 512 != 0)
+				if (true)
                 {
                     auto clk = clock();
                     m_fps = 1000.0f / (clk - m_tmpClock);
                     m_tmpClock = clk;
-                    FrameDesc frameDesc{ pframe, pbegin - pframe };
+                    FrameDesc frameDesc{ pframe, maxFrameLen };
                     //printf("/n%d, %d\n", sumRecv, frameLen);
                     if (frameDesc.m_frameSize > 0)
                     {
@@ -181,9 +186,10 @@ void CyVideoSourceOO::CoreRecv()
     for (auto i = 0; i != queueSize; i++)
     {
         long len = 0;
-        m_USBDevice->BulkInEndPt->FinishDataXfer(bufs[i].get(), len, ovs + i, contexts[i]);
+      //  m_USBDevice->BulkInEndPt->FinishDataXfer(bufs[i].get(), len, ovs + i, contexts[i]);
         CloseHandle(ovs[i].hEvent);
     }
+
 }
 
 void CyVideoSourceOO::CoreCVT()
@@ -205,8 +211,10 @@ void CyVideoSourceOO::CoreCVT()
             continue;
         }
         //printf("check0=%x, check1=%x, width=%d, height=%d, pixelCount=%d, index=%d\n", pheader->check0, pheader->check1, pheader->width, pheader->height, pheader->pixelCount, pheader->index);
-        cv::Mat i(pheader->height, pheader->width, CV_8UC1, pframe);
-        cv::Mat o(pheader->height, pheader->width, CV_8UC3);
+        //cv::Mat i(pheader->height, pheader->width, CV_8UC1, pframe);
+        //cv::Mat o(pheader->height, pheader->width, CV_8UC3);
+		cv::Mat i(1944, 2592, CV_8UC1, pframe);
+		cv::Mat o(1944, 2592, CV_8UC3);
         cv::cvtColor(i, o, CV_BayerRG2RGB);
 
         /// gay mode

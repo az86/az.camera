@@ -85,7 +85,8 @@ void play(int index, bool *isRun)
         cv::Mat m(height, width, CV_8UC3, img);
         cv::imshow(winName, m);
         cv::waitKey(1);
-        sprintf_s(gFPS, " %3d: image got, width=%d, height=%d, FPS=%f", i++, width, height, fps);
+		//sprintf_s(gFPS, " %3d: image got, width=%d, height=%d, FPS=%f", i++, width, height, fps);
+		//printf(" %3d: image got, width=%d, height=%d, FPS=%f\n", i++, width, height, fps);
 
         //还回用完的图像数据，避免内存泄露
         RetriveFrame(frame);
@@ -130,15 +131,19 @@ void playcmd()
         }
         else if (strstr(buf, "led") == buf)
         {
-            std::lock_guard<std::mutex> lckVec(muVector);
-            int val;
-            sscanf_s(buf, "led 0x%x", &val);
-            for (auto &dev : gDevs)
-            {
-                std::lock_guard<std::mutex> lg(*std::get<1>(dev));
-                SetLED(std::get<0>(dev), val);
-            }
-        }
+			for (int i = 0; i < 1000; i++)
+			{
+				printf("%d\n", i);
+				std::lock_guard<std::mutex> lckVec(muVector);
+				int val;
+				sscanf_s(buf, "led 0x%x", &val);
+				for (auto &dev : gDevs)
+				{
+					// std::lock_guard<std::mutex> lg(*std::get<1>(dev));
+					SetLED(std::get<0>(dev), val);
+				}
+			}
+		}
         else if (strstr(buf, "id") == buf)
         {
             std::lock_guard<std::mutex> lckVec(muVector);
