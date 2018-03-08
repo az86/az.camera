@@ -42,9 +42,9 @@ bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsi
     printf("dev [%p] set param: req: 0x%02x, value: 0x%04x, index: 0x%04x, param: %s, length: %u ", this, reqCode, value, index, param, paramLen);
     if (!m_USBDevice->IsOpen())
         return false;
-    auto state = m_isRecvRun;
+ /*   auto state = m_isRecvRun;
     if (state == true)
-        Stop();
+        Stop();*/
     auto ept = m_USBDevice->ControlEndPt;
     ept->Target = TGT_DEVICE;
     ept->ReqType = REQ_VENDOR;
@@ -55,8 +55,8 @@ bool CyVideoSourceOO::SetParam(unsigned char reqCode, unsigned short value, unsi
     long len = paramLen;
     auto r = ept->XferData(param, len);
     logMutex.unlock();
-    if (state == true)
-        Start();
+    //if (state == true)
+    //    Start();
     printf("%s!\n", r ? "ok" : "failed");
     return r;
 }
