@@ -184,6 +184,7 @@ void CyVideoSourceOO::CoreRecv()
         m_USBDevice->BulkInEndPt->FinishDataXfer(bufs[i].get(), len, ovs + i, contexts[i]);
         CloseHandle(ovs[i].hEvent);
     }
+	delete[] pframe;
 }
 
 void CyVideoSourceOO::CoreCVT()
