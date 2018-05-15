@@ -22,7 +22,7 @@
     <ProjectGuid>{A0805D63-550E-4E43-A498-7549A5CD5F35}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>azcameraCoreCyVideoSource</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -95,12 +95,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;AZCAMERACORECYVIDEOSOURCE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\az.camera.config\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\az.camera.config\;$(SolutionDir)HALCON-17.12-Progress\include\;$(SolutionDir)\HALCON-17.12-Progress\include\halconcpp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>CoreCyVideoSource.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)HALCON-17.12-Progress\lib\x86sse2-win32\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
@@ -108,6 +109,9 @@
 copy $(TargetDir)$(TargetName).lib ..\publish\lib\
 copy mgl.CyAPI.h ..\publish\include\</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command />
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -135,7 +139,7 @@ copy mgl.CyAPI.h ..\publish\include\</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;AZCAMERACORECYVIDEOSOURCE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\az.camera.config\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\az.camera.config\;$(SolutionDir)\HALCON-17.12-Progress\include\;$(SolutionDir)\HALCON-17.12-Progress\include\halconcpp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,6 +147,7 @@ copy mgl.CyAPI.h ..\publish\include\</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>CoreCyVideoSource.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)HALCON-17.12-Progress\lib\x86sse2-win32\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent />
@@ -151,6 +156,9 @@ copy mgl.CyAPI.h ..\publish\include\</Command>
 copy $(TargetDir)$(TargetName).lib ..\publish\lib\
 copy mgl.CyAPI.h ..\publish\include\</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command />
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

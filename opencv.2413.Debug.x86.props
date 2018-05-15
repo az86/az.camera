@@ -5,8 +5,8 @@
     <OpencvDir>C:\Library\opencv2413\build\x86\vc14\</OpencvDir>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>c:\Library\opencv2413\build\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Library\opencv2413\build\x86\vc14\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)publish\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)publish\lib\opencvx86\;$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -19,7 +19,8 @@
       </Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>copy $(OpencvDir)bin\opencv*d.dll  $(TargetDir)</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

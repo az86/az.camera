@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>C:\Library\boost_1_66_0\;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Library\boost_1_66_0\stage\lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)boost_1_67_0\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)boost_1_67_0\stage\lib\;$(LibraryPath)</LibraryPath>
     <_PropertySheetDisplayName>boost.x86</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup />

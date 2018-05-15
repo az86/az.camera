@@ -128,7 +128,7 @@ void CyVideoSourceOO::CoreRecv()
     unsigned char * contexts[queueSize];
     for (auto i = 0; i < queueSize; i++)
     {
-        bufs[i] = std::shared_ptr<unsigned char>(new unsigned char[bufLen], [](auto ptr) {delete[]ptr; });
+        bufs[i] = std::shared_ptr<unsigned char>(new unsigned char[bufLen], [](auto *ptr) {delete[]ptr; });
         ovs[i].hEvent = CreateEventA(nullptr, false, false, nullptr);
         contexts[i] = m_USBDevice->BulkInEndPt->BeginDataXfer(bufs[i].get(), bufLen, ovs + i);
     }
@@ -207,8 +207,8 @@ void CyVideoSourceOO::CoreCVT()
         }
         //printf("check0=%x, check1=%x, width=%d, height=%d, pixelCount=%d, index=%d\n", pheader->check0, pheader->check1, pheader->width, pheader->height, pheader->pixelCount, pheader->index);
         cv::Mat i(pheader->height, pheader->width, CV_8UC1, pframe);
-        cv::Mat o(pheader->height, pheader->width, CV_8UC3);
-        cv::cvtColor(i, o, CV_BayerRG2RGB);
+        cv::Mat o(pheader->height, pheader->width, CV_8UC1);
+        cv::cvtColor(i, o, CV_BayerRG2GRAY);
 
         /// gay mode
         //cv::Mat o(pheader->height, pheader->width, CV_8UC1);

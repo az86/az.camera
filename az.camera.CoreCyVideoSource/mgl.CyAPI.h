@@ -162,3 +162,18 @@ extern bool SetSensor1080P(PDevice pDev);
 /// <Return>Product ID</Return>
 ////////////////////////////////////////////////////////////////
 extern unsigned short GetProductID(PDevice pDev);
+
+
+#include <HalconCpp.h>
+using namespace HalconCpp;
+
+////////////////////////////////////////////////////////////////
+/// <Function> GetAllTargetAz </Function>
+/// <Description> 获得图像中前后靶的位姿、圆心坐标、圆心距离。</Description>
+/// <pframe> 输入的灰度图像 </pframe>
+/// <hv_CameraParam> 输入摄像机内参 </hv_CameraParam>
+/// <hvec_VecPose> 输出的所有位姿 </hvec_VecPose>
+/// <hv_RowFront, hv_ColFront, hv_DistanceF> 输出的前靶圆心坐标及圆心距离 </hv_RowFront, hv_ColFront, hv_DistanceF> 
+/// <hv_RowBehind, hv_ColBehind, hv_DistanceB > 输出的前靶圆心坐标及圆心距离 </hv_RowBehind, hv_ColBehind, hv_DistanceB>
+////////////////////////////////////////////////////////////////
+extern void GetAllTargetAz(unsigned char *pframe, HTuple hv_CameraParam, HTupleVector/*{eTupleVector,Dim=1}*/ *hvec_VecPose, HTuple *hv_RowFront, HTuple *hv_ColFront, HTuple *hv_DistanceF, HTuple *hv_RowBehind, HTuple *hv_ColBehind, HTuple *hv_DistanceB)

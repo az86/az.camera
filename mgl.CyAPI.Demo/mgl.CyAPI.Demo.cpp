@@ -82,7 +82,7 @@ void play(int index, bool *isRun)
         auto fps = GetFPS(pDev);
         muDev.unlock();
         // ÏÔÊ¾Í¼ÏñÊý¾Ý
-        cv::Mat m(height, width, CV_8UC3, img);
+        cv::Mat m(height, width, CV_8UC1, img);
         cv::imshow(winName, m);
         cv::waitKey(1);
         sprintf_s(gFPS, " %3d: image got, width=%d, height=%d, FPS=%f", i++, width, height, fps);

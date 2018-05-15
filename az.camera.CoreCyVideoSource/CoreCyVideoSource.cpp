@@ -1,6 +1,19 @@
 #include <cstdio>
 #include "CyVideoSourceOO.h"
 #include <CommandConfig.h>
+
+/////////////////////////////////////////////////////////////
+// for halcon
+// 解决方案目录中放入HALCON-17.12-Progress，其中包含halcon17的头文件，
+// 头文件的类型在algorithmrt.h中被使用，其开发者未提供其类型定义
+#include <HalconCpp.h>
+using namespace HalconCpp;
+#include "../algorithmrt/algorithmrt.h"
+#pragma comment(lib, "../algorithmrt/algorithmrt.lib")
+#pragma comment(lib, "HalconCpp.lib")
+
+/////////////////////////////////////////////////////////////
+
 typedef void * PDevice;
 
 int GetDeviceCount()
@@ -137,4 +150,13 @@ unsigned short GetProductID(PDevice pDev)
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
     return lpDev->CoreGetProductID();
 
+}
+
+
+void GetAllTargetAz(unsigned char *pframe, HTuple hv_CameraParam, HTupleVector/*{eTupleVector,Dim=1}*/ *hvec_VecPose, HTuple *hv_RowFront, HTuple *hv_ColFront, HTuple *hv_DistanceF, HTuple *hv_RowBehind, HTuple *hv_ColBehind, HTuple *hv_DistanceB)
+{
+	auto pmat = reinterpret_cast<cv::Mat*>(pframe);
+	HImage ho_Image;
+	GenImage1(&ho_Image, "byte", pmat->cols, pmat->rows, (Hlong)pmat->data);
+	GetAllTarget(ho_Image, hv_CameraParam, hvec_VecPose, hv_RowFront, hv_ColFront, hv_DistanceF, hv_RowBehind, hv_ColBehind, hv_DistanceB);
 }
