@@ -11,8 +11,30 @@ using namespace HalconCpp;
 #include "../algorithmrt/algorithmrt.h"
 #pragma comment(lib, "../algorithmrt/algorithmrt.lib")
 #pragma comment(lib, "HalconCpp.lib")
-
+#pragma pack(push,1)
+struct CycleCenterInfo
+{
+	CycleCenterInfo():mec_vecPose(1) {}
+	HTuple m_cameraParam;		//输入: 摄像机内参
+	HTupleVector mec_vecPose;	// {eTupleVector,Dim=1} 输出的所有位姿
+	HTuple m_rowFront;			// 输出的前靶圆心坐标及圆心距离
+	HTuple m_colFront;			// 输出的前靶圆心坐标
+	HTuple m_distanceF;			// 输出的前靶圆心距离
+	HTuple m_rowBehind;			// 输出的前靶圆心坐标及圆心距离
+	HTuple m_colBehind;			// 输出的前靶圆心坐标
+	HTuple m_distanceB;			// 输出的前靶圆心距离
+};
+#pragma pack(pop)
 /////////////////////////////////////////////////////////////
+
+
+void GetAllTargetAz(unsigned char *pframe, HTuple hv_CameraParam, HTupleVector/*{eTupleVector,Dim=1}*/ *hvec_VecPose, HTuple *hv_RowFront, HTuple *hv_ColFront, HTuple *hv_DistanceF, HTuple *hv_RowBehind, HTuple *hv_ColBehind, HTuple *hv_DistanceB)
+{
+	auto pmat = reinterpret_cast<cv::Mat*>(pframe);
+	HImage ho_Image;
+	GenImage1(&ho_Image, "byte", pmat->cols, pmat->rows, (Hlong)pmat->data);
+	GetAllTarget(ho_Image, hv_CameraParam, hvec_VecPose, hv_RowFront, hv_ColFront, hv_DistanceF, hv_RowBehind, hv_ColBehind, hv_DistanceB);
+}
 
 typedef void * PDevice;
 
@@ -36,11 +58,13 @@ PDevice OpenDevice(const int deviceIndex)
     delete pDev;
     return nullptr;
 }
-unsigned char * QuaryFrame(PDevice pDev)
+unsigned char * QuaryFrame(PDevice pDev, CycleCenterInfo &cci)
 {
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
     auto pmat = new cv::Mat(lpDev->GetFrame());
-    return reinterpret_cast<unsigned char *>(pmat);
+	auto pimg = reinterpret_cast<unsigned char *>(pmat);
+	GetAllTargetAz(pimg, cci.m_cameraParam, &cci.mec_vecPose, &cci.m_rowFront, &cci.m_colFront, &cci.m_distanceF, &cci.m_rowBehind, &cci.m_colBehind, &cci.m_distanceB);
+    return pimg;
 }
 
 int GetImgWidth(unsigned char * pframe)
@@ -150,13 +174,4 @@ unsigned short GetProductID(PDevice pDev)
     auto lpDev = static_cast<CyVideoSourceOO *>(pDev);
     return lpDev->CoreGetProductID();
 
-}
-
-
-void GetAllTargetAz(unsigned char *pframe, HTuple hv_CameraParam, HTupleVector/*{eTupleVector,Dim=1}*/ *hvec_VecPose, HTuple *hv_RowFront, HTuple *hv_ColFront, HTuple *hv_DistanceF, HTuple *hv_RowBehind, HTuple *hv_ColBehind, HTuple *hv_DistanceB)
-{
-	auto pmat = reinterpret_cast<cv::Mat*>(pframe);
-	HImage ho_Image;
-	GenImage1(&ho_Image, "byte", pmat->cols, pmat->rows, (Hlong)pmat->data);
-	GetAllTarget(ho_Image, hv_CameraParam, hvec_VecPose, hv_RowFront, hv_ColFront, hv_DistanceF, hv_RowBehind, hv_ColBehind, hv_DistanceB);
 }

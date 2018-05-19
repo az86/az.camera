@@ -1,4 +1,23 @@
 #pragma once
+
+#include <HalconCpp.h>
+using namespace HalconCpp;
+#pragma pack(push,1)
+struct CycleCenterInfo
+{
+	CycleCenterInfo():mec_vecPose(1) {}
+	HTuple m_cameraParam;		//输入: 摄像机内参
+	HTupleVector mec_vecPose;	// {eTupleVector,Dim=1} 输出的所有位姿
+	HTuple m_rowFront;			// 输出的前靶圆心坐标及圆心距离
+	HTuple m_colFront;			// 输出的前靶圆心坐标
+	HTuple m_distanceF;			// 输出的前靶圆心距离
+	HTuple m_rowBehind;			// 输出的前靶圆心坐标及圆心距离
+	HTuple m_colBehind;			// 输出的前靶圆心坐标
+	HTuple m_distanceB;			// 输出的前靶圆心距离
+};
+#pragma pack(pop)
+
+
 ////////////////////////////////////////////////////////////////
 /// 马国良电路板API头文件，未经授权禁止使用。
 /// 作者：马国梁，孙奇
@@ -38,9 +57,10 @@ extern PDevice OpenDevice(const int deviceIndex);
 /// <Function> QuaryFrame </Function>
 /// <Description> 获取一帧图像数据包，使用完毕后需要调用RetriveFrame销毁图像内存，避免内存泄露</Description>
 /// <pDev> 设备对象 </pDev>
+/// <cci> 圆心信息 </cci>
 /// <Return>图像数据包</Return>
 ////////////////////////////////////////////////////////////////
-extern unsigned char * QuaryFrame(PDevice pDev);
+extern unsigned char * QuaryFrame(PDevice pDev, CycleCenterInfo &cci);
 
 ////////////////////////////////////////////////////////////////
 /// <Function> GetImgWidth </Function>
@@ -162,18 +182,3 @@ extern bool SetSensor1080P(PDevice pDev);
 /// <Return>Product ID</Return>
 ////////////////////////////////////////////////////////////////
 extern unsigned short GetProductID(PDevice pDev);
-
-
-#include <HalconCpp.h>
-using namespace HalconCpp;
-
-////////////////////////////////////////////////////////////////
-/// <Function> GetAllTargetAz </Function>
-/// <Description> 获得图像中前后靶的位姿、圆心坐标、圆心距离。</Description>
-/// <pframe> 输入的灰度图像 </pframe>
-/// <hv_CameraParam> 输入摄像机内参 </hv_CameraParam>
-/// <hvec_VecPose> 输出的所有位姿 </hvec_VecPose>
-/// <hv_RowFront, hv_ColFront, hv_DistanceF> 输出的前靶圆心坐标及圆心距离 </hv_RowFront, hv_ColFront, hv_DistanceF> 
-/// <hv_RowBehind, hv_ColBehind, hv_DistanceB > 输出的前靶圆心坐标及圆心距离 </hv_RowBehind, hv_ColBehind, hv_DistanceB>
-////////////////////////////////////////////////////////////////
-extern void GetAllTargetAz(unsigned char *pframe, HTuple hv_CameraParam, HTupleVector/*{eTupleVector,Dim=1}*/ *hvec_VecPose, HTuple *hv_RowFront, HTuple *hv_ColFront, HTuple *hv_DistanceF, HTuple *hv_RowBehind, HTuple *hv_ColBehind, HTuple *hv_DistanceB);

@@ -6,6 +6,7 @@
 #include "../publish/include/mgl.CyAPI.h"
 #pragma comment(lib, "../publish/lib/az.camera.CoreCyVideoSource.lib")
 ///注意在项目文件属性中 配置属性->生成事件->预先生成事件->命令行 中有设置拷贝运行所需dll
+#pragma comment(lib, "HalconCpp.lib")
 
 #include <opencv2/opencv.hpp> // 仅为了cv::imshow("mgl", m)显示图像
 
@@ -75,7 +76,8 @@ void play(int index, bool *isRun)
     while (*isRun)
     {
         muDev.lock();
-        auto frame = QuaryFrame(pDev);
+		CycleCenterInfo cci;
+        auto frame = QuaryFrame(pDev, cci);
         auto width = GetImgWidth(frame);
         auto height = GetImgHeight(frame);
         auto img = GetImg(frame); // 从图像数据帧中获取RGB数据
